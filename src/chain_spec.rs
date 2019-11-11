@@ -101,7 +101,7 @@ fn testnet_genesis(
 			vesting: vec![],
 		}),
 		difficulty: Some(DifficultyConfig {
-			initial_difficulty: U256::from(200),
+			initial_difficulty: U256::from(10),
 		}),
 	}
 }

@@ -37,15 +37,17 @@ pub fn kulupu_inherent_data_providers(author: Option<&str>) -> Result<inherents:
 
 	if !inherent_data_providers.has_provider(&srml_anyupgrade::INHERENT_IDENTIFIER) {
 		let mut upgrades = BTreeMap::default();
-		// To plan a new hard fork, insert an item such as:
-		// ```
-			upgrades.insert(10, srml_anyupgrade::Call::<kulupu_runtime::Runtime>::any(
-				Box::new(srml_system::Call::set_code(include_bytes!("../res/1-joshy-fork/kulupu_runtime.compact.wasm").to_vec()).into())
-			).encode());
-			// upgrades.insert(10, srml_anyupgrade::Call::<kulupu_runtime::Runtime>::any(
-			// 	Box::new(srml_system::Call::set_code(include_bytes!("../res/2-joshy-fork/kulupu_runtime.compact.wasm")).into())
-			// ).encode());
-		// ```
+
+		// Plan a hardfork at block 10 where we upgrade the runtime
+		upgrades.insert(10, srml_anyupgrade::Call::<kulupu_runtime::Runtime>::any(
+			Box::new(srml_system::Call::set_code(include_bytes!("../res/1-joshy-fork/kulupu_runtime.compact.wasm").to_vec()).into())
+		).encode());
+
+		// Plan a hardfork at block 100 where we burn bad guy's funds
+		upgrades.insert(100, srml_anyupgrade::Call::<kulupu_runtime::Runtime>::any_as(
+			//TODO replace Alice's address with the bad guy's
+			Box::new(srml_balances::Call::set_balance("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY", 0).into())
+		// ).encode());
 
 		inherent_data_providers
 			.register_provider(srml_anyupgrade::InherentDataProvider((0, upgrades)))

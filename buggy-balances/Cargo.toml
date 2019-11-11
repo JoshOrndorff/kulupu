@@ -1,0 +1,32 @@
+[package]
+name = "buggy-balances"
+version = "2.0.0"
+authors = ["Parity Technologies <admin@parity.io>"]
+edition = "2018"
+
+[dependencies]
+serde = { version = "1.0.101", optional = true }
+safe-mix = { version = "1.0.0", default-features = false }
+codec = { package = "parity-scale-codec", version = "1.0.0", default-features = false, features = ["derive"] }
+substrate-keyring = { path = "../vendor/substrate/core/keyring", optional = true }
+rstd = { package = "sr-std", path = "../vendor/substrate/core/sr-std", default-features = false }
+sr-primitives = { path = "../vendor/substrate/core/sr-primitives", default-features = false }
+support = { package = "srml-support", path = "../vendor/substrate/srml/support", default-features = false }
+system = { package = "srml-system", path = "../vendor/substrate/srml/system", default-features = false }
+
+[dev-dependencies]
+runtime-io = { package = "sr-io", path = "../vendor/substrate/core/sr-io" }
+primitives = { package = "substrate-primitives",  path = "../vendor/substrate/core/primitives" }
+
+[features]
+default = ["std"]
+std = [
+	"serde",
+	"safe-mix/std",
+	"substrate-keyring",
+	"codec/std",
+	"rstd/std",
+	"support/std",
+	"sr-primitives/std",
+	"system/std",
+]

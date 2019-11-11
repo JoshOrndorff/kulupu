@@ -46,9 +46,11 @@ vergen = "3"
 
 [workspace]
 members = [
+	"runtime0-bug",
 	"runtime",
 	"pow",
 	"anyupgrade",
 	"rewards",
+	"buggy-balances",
 ]
 exclude = ["vendor"]
