@@ -35,6 +35,8 @@ consensus-pow = { package = "substrate-consensus-pow", path = "vendor/substrate/
 kulupu-pow = { path = "pow" }
 srml-timestamp = { path = "vendor/substrate/srml/timestamp" }
 srml-system = { path = "vendor/substrate/srml/system" }
+srml-balances = { path = "vendor/substrate/srml/balances" }
+srml-indices = { path = "vendor/substrate/srml/indices" }
 srml-anyupgrade = { path = "anyupgrade" }
 srml-rewards = { path = "rewards" }
 structopt = "0.2"

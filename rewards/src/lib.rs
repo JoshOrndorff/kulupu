@@ -15,9 +15,13 @@ use inherents::{InherentIdentifier, InherentData, ProvideInherent,
 use inherents::ProvideInherentData;
 use codec::{Encode, Decode};
 
-pub trait Trait: balances::Trait {
-	type Reward: Get<Self::Balance>;
+pub trait Trait: system::Trait {
+	type Reward: Get<BalanceOf<Self>>;
+	type Currency: Currency<Self::AccountId>;
 }
+
+type BalanceOf<T> =
+	<<T as Trait>::Currency as Currency<<T as system::Trait>::AccountId>>::Balance;
 
 decl_storage! {
 	trait Store for Module<T: Trait> as Rewards {
@@ -39,7 +43,7 @@ decl_module! {
 
 		fn on_finalize() {
 			if let Some(author) = <Self as Store>::Author::get() {
-				balances::Module::<T>::deposit_creating(&author, T::Reward::get());
+				<<T as Trait>::Currency>::deposit_creating(&author, T::Reward::get());
 			}
 
 			<Self as Store>::Author::kill();

@@ -198,6 +198,7 @@ impl anyupgrade::Trait for Runtime {
 
 impl rewards::Trait for Runtime {
 	type Reward = Reward;
+	type Currency = Balances;
 }
 
 construct_runtime!(

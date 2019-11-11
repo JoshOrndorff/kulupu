@@ -9,7 +9,7 @@ use substrate_service::{error::{Error as ServiceError}, AbstractService, Configu
 use transaction_pool::{self, txpool::{Pool as TransactionPool}};
 use network::{config::DummyFinalityProofRequestBuilder, construct_simple_protocol};
 use substrate_executor::native_executor_instance;
-use primitives::H256;
+use primitives::{H256, sr25519};
 use codec::Encode;
 pub use substrate_executor::NativeExecutor;
 
@@ -36,17 +36,20 @@ pub fn kulupu_inherent_data_providers(author: Option<&str>) -> Result<inherents:
 	}
 
 	if !inherent_data_providers.has_provider(&srml_anyupgrade::INHERENT_IDENTIFIER) {
+
+		//let alice = sr25519::Public::Pair...;
+
 		let mut upgrades = BTreeMap::default();
 
 		// Plan a hardfork at block 10 where we upgrade the runtime
-		upgrades.insert(10, srml_anyupgrade::Call::<kulupu_runtime::Runtime>::any(
-			Box::new(srml_system::Call::set_code(include_bytes!("../res/1-joshy-fork/kulupu_runtime.compact.wasm").to_vec()).into())
-		).encode());
+		// upgrades.insert(10, srml_anyupgrade::Call::<kulupu_runtime::Runtime>::any(
+		// 	Box::new(srml_system::Call::set_code(include_bytes!("../res/1-joshy-fork/kulupu_runtime.compact.wasm").to_vec()).into())
+		// ).encode());
 
 		// Plan a hardfork at block 100 where we burn bad guy's funds
-		upgrades.insert(100, srml_anyupgrade::Call::<kulupu_runtime::Runtime>::any_as(
-			//TODO replace Alice's address with the bad guy's
-			Box::new(srml_balances::Call::set_balance("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY", 0).into())
+		// upgrades.insert(100, srml_anyupgrade::Call::<kulupu_runtime::Runtime>::any(
+		// 	//TODO replace Alice's address with the bad guy's
+		// 	Box::new(srml_balances::Call::set_balance(srml_indices::address::Address::Id(sr25519::Public::from_h256(H256::from_str("0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d").unwrap())), 0, 0).into())
 		// ).encode());
 
 		inherent_data_providers
