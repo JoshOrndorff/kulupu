@@ -1,36 +1,7 @@
-# Kulupu
+# 51% Attack Workshop
 
-[![Discord](https://img.shields.io/discord/586902457053872148.svg)](https://discord.gg/DZbg4rZ)
-
-Proof-of-work blockchain built on
+This workshop is based on [Kulupu](https://github.com/kulupu/kulupu), a proof-of-work blockchain built on
 [Substrate](https://github.com/paritytech/substrate).
-
-## Overview
-
-Kulupu is a sister project related to [Solri](https://solri.org). Kulupu's goal
-is to create a working proof-of-work blockchain built using unmodified Substrate
-blockchain framework. Compared with Solri, Kulupu aims to take a more practical
-approach of an on-chain governed self-updating blockchain, while Solri maintains
-the ideal minimalist blockchain design.
-
-The consensus engine for Kulupu is the CPU mining algorithm RandomX. For initial
-launch, the emission rate is fixed at one coin per second. This, however can be
-changed using hard fork or on-chain governance in the future.
-
-## Network Launch
-
-The first launch attempt is on! We currently do not provide any official binary
-release, so please compile the node by yourself, using the instructions below.
-
-Launch attempt means that it's an experimental launch. We relaunch the network
-when bugs are found. Otherwise, the current network becomes the mainnet.
-
-Substrate contains a variety of features including smart contracts and
-democracy. However, for initial launch of Kulupu, we plan to only enable basic
-balance and transfer module. This is to keep the network focused, and reduce
-risks in terms of stability and safety. Also note that initially the democracy
-module is also disabled, meaning we'll be updating runtime via hard fork until
-that part is enabled.
 
 ## Prerequisites
 
@@ -56,6 +27,8 @@ Install required tools:
 
 ## Run
 
+If you can run these commands successfully, you're ready for the workshop.
+
 ### Full Node
 
 ```bash
@@ -63,12 +36,15 @@ cargo run --release
 ```
 
 ### Mining
+This portion is optional for workshop participation. If you want to actively attack or defend the chain you will need to follow these instructions. If you just want to use the network and experience the effects, you may skip this section.
+
 
 Install `subkey`:
 
 ```bash
 cargo install --force --git https://github.com/paritytech/substrate subkey
 ```
+TODO Can we save recompile, by using the subkey that's already in `vendor`?
 
 Generate an account to use as the target for mining:
 
@@ -82,14 +58,56 @@ Remember the public key, and pass it to node for mining. For example:
 cargo run --release -- --validator --author 0x7e946b7dd192307b4538d664ead95474062ac3738e04b5f3084998b76bc5122d
 ```
 
-## Proof of Work Parameters
+## Join a Network
 
-* **Algorithm**: RandomX
-* **Block time**: 60 seconds
-* **Issurance**: 1 KULU per second (60 KULU per block)
-* No premine
+Participants start their nodes and connect to the specified bootnodes
 
-## Disclaimer
+## Use the Network
+Add your adresses to polkadot UI.
 
-This project is a side project by Wei Tang, and is not endorsed by Parity
-Technologies.
+Make a few transfers to see what the chain can do
+
+## Start mining
+Generate your own address to use for mining. Restart your node as a miner.
+
+Notice the difficulty adjusts as more users start mining
+
+If you didn't build `subkey` but still want to mine, here are the pubkeys for the dev accounts.
+
+| Name    | SR25519 Public Key |
+| ------- | ------------------ |
+| Alice   | 0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d |
+| Bob     | 0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48 |
+| Charlie | 0x90b5ab205c6974c9ea841be688864633dc9ca8a357843eeacf2314649965fe22 |
+| Dave    | 0x306721211d5404bd9da88e0204360a1a9ab8b87c66c1bc2fcdd37f3c2222cc20 |
+| Eve     | 0xe659a7a1628cdd93febc04a4e0646ea20e9f5f0ce097d9a05290d4a9e054df4e |
+| Ferdie  | 0x1cbd2d43530a44705ad088af313e18f80b53ef16b36177cd4b77b846f2a5f07c |
+
+## Uncontroversial Upgrade
+Start compile, then discuss what's happening
+
+It seems a malicious user can set any user's balance arbitrarily. This is definitely not the monetary policy we agreed on or thought we had when the network was launched. The bug is in the buggy-balances module.
+
+Let's fix it.
+* Fix the actual bug
+* Build the new runtime
+* Plan the hardfork
+* Build the new node.
+
+## Test the fix
+Check that normal token transfers still work as expected. Can you send and receive tokens?
+
+Check that the arbitrary setting of balances no longer works.
+
+## Execute this Scenario
+The following headlines emerge
+* Bug fixed, dev token grows in popularity
+* Bad guys capture child, request ransom
+* Good guys pay ransom, child returned safely
+  * This is the only part of the scenario that happened on chain
+* Bad guys still not caught.
+* Governments urge developers to freeze Bad guys' funds
+* Bad guys: "There's two sides. We're actually the good guys"
+
+## Controversial Hardfork
+The government manages to convince many miners to freeze the funds. They plan a hard fork just as we did before.
