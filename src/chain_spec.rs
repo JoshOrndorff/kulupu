@@ -1,6 +1,6 @@
 use kulupu_runtime::{
 	AccountId, BalancesConfig, GenesisConfig,
-	IndicesConfig, SystemConfig, DifficultyConfig, WASM_BINARY,
+	IndicesConfig, SystemConfig, DifficultyConfig, //WASM_BINARY,
 };
 use kulupu_primitives::U256;
 use substrate_service;
@@ -90,7 +90,7 @@ fn testnet_genesis(
 	_enable_println: bool) -> GenesisConfig {
 	GenesisConfig {
 		system: Some(SystemConfig {
-			code: WASM_BINARY.to_vec(),
+			code: include_bytes!("../res/0-genesis/kulupu_runtime.compact.wasm").to_vec(),
 			changes_trie_config: Default::default(),
 		}),
 		indices: Some(IndicesConfig {
